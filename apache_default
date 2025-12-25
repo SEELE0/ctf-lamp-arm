@@ -9,17 +9,15 @@
         <Directory /var/www/html>
                 Options Indexes FollowSymLinks MultiViews
                 # To make wordpress .htaccess work
-                AllowOverride FileInfo
-                Order allow,deny
-                allow from all
+                AllowOverride All
+                Require all granted
         </Directory>
 
         ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
         <Directory "/usr/lib/cgi-bin">
                 AllowOverride None
                 Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-                Order allow,deny
-                Allow from all
+                Require all granted
         </Directory>
 
         ErrorLog ${APACHE_LOG_DIR}/error.log

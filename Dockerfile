@@ -1,10 +1,10 @@
-FROM ubuntu:trusty
+FROM ubuntu:20.04
 MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-  apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php-apc php5-mcrypt && \
+  apt-get -y install supervisor git apache2 libapache2-mod-php mariadb-server php-mysql php-gd php-xml php-mbstring pwgen && \
   echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Add image configuration and scripts
@@ -18,6 +18,9 @@ ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
+
+# Fix for MariaDB directory
+RUN mkdir -p /var/run/mysqld && chown mysql:mysql /var/run/mysqld
 
 # Add MySQL utils
 ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
